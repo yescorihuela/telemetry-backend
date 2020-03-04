@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  app_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.api-backend
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./api-backend:/app
+    command: >
+      sh -c "rails server -p 4001 -b 0.0.0.0"
+    networks:
+      - peor_es_nada
+    container_name: app_backend
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: p30r3sn4d4
+      POSTGRES_DB: 'telemetry_buses_peor_es_nada'     
+    depends_on:
+      - db_measurements    
+
+  db_measurements:
+    container_name: db_measurements
+    volumes :
+      - pgdata:/var/lib/postgresql/data    
+    image: postgres:12
+    restart: always
+    networks:
+      - peor_es_nada
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: p30r3sn4d4
+      POSTGRES_DB: 'telemetry_buses_peor_es_nada'
+    ports:
+      - "5432:5432"
+networks:
+  peor_es_nada:
+    driver: bridge
+volumes:
+    pgdata:
