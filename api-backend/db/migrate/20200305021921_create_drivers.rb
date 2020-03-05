@@ -1,13 +1,10 @@
 class CreateDrivers < ActiveRecord::Migration[5.2]
   def change
     create_table :drivers do |t|
-      t.string :Device
-      t.string :Vehicle
-      t.string :VehicleDevice
-      t.string :GpsMeasurement
-      t.string :Route
-      t.string :RouteCoordinate
-
+      t.string :first_name
+      t.string :last_name
+      t.string :identification_code, unique: true
+      t.string :phone
       t.timestamps
     end
   end
