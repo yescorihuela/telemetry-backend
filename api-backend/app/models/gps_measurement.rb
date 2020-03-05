@@ -1,0 +1,2 @@
+class GpsMeasurement < ApplicationRecord
+end

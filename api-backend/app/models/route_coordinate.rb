@@ -1,0 +1,2 @@
+class RouteCoordinate < ApplicationRecord
+end

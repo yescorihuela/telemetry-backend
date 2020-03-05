@@ -15,9 +15,9 @@ services:
       - peor_es_nada
     container_name: app_backend
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: p30r3sn4d4
-      POSTGRES_DB: 'telemetry_buses_peor_es_nada'     
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=p30r3sn4d4
+      - POSTGRES_DB=telemetry_buses_peor_es_nada
     depends_on:
       - db_measurements    
 
@@ -30,9 +30,9 @@ services:
     networks:
       - peor_es_nada
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: p30r3sn4d4
-      POSTGRES_DB: 'telemetry_buses_peor_es_nada'
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=p30r3sn4d4
+      - POSTGRES_DB=telemetry_buses_peor_es_nada
     ports:
       - "5432:5432"
 networks:

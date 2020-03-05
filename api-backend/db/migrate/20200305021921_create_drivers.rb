@@ -1,0 +1,14 @@
+class CreateDrivers < ActiveRecord::Migration[5.2]
+  def change
+    create_table :drivers do |t|
+      t.string :Device
+      t.string :Vehicle
+      t.string :VehicleDevice
+      t.string :GpsMeasurement
+      t.string :Route
+      t.string :RouteCoordinate
+
+      t.timestamps
+    end
+  end
+end

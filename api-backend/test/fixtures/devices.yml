@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Vehicle: MyString
+  VehicleDevice: MyString
+  GpsMeasurement: MyString
+  Route: MyString
+  RouteCoordinate: MyString
+
+two:
+  Vehicle: MyString
+  VehicleDevice: MyString
+  GpsMeasurement: MyString
+  Route: MyString
+  RouteCoordinate: MyString

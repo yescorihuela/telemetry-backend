@@ -1,0 +1,2 @@
+class TripStatus < ApplicationRecord
+end
