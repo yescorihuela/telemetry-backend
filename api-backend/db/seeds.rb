@@ -31,11 +31,11 @@ drivers = Driver.create([
 
 devices = Device.create([
     {
-        device_serial_number: 'd131dd02c5e6eec4'
+        device_serial_number: 'd131dd02c5e6eec4',
         adquisition_date: Time.now
     },
     {
-        device_serial_number: '4d131dd02c5e6eec'
+        device_serial_number: '4d131dd02c5e6eec',
         adquisition_date: Time.now()
     },
     {
@@ -48,7 +48,7 @@ devices = Device.create([
 vehicles = Vehicle.create([
     {
         license_plate: license_plates.pop(),
-        driver_id: 1
+        driver_id: 1,
         total_seats: (rand() * 100).to_i
     }
 ])
@@ -56,14 +56,14 @@ vehicles = Vehicle.create([
 vehicle_devices = VehicleDevice.create([
     {
         vehicle_id: 1,
-        driver_id: 1
+        device_id: 1
     },
     {
         vehicle_id: 2,
-        driver_id: 2
+        device_id: 2
     },
     {
         vehicle_id: 3,
-        driver_id: 3
+        device_id: 3
     }    
 ])

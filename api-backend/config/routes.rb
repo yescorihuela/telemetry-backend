@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  concern :api do
-    get 'devices', to: 'devices#index', as: :devices, format: :json
-  end
-
-  namespace :v1 do
-    concerns :api 
+  namespace :api do 
+    namespace :v1 do
+      get 'devices', to: 'devices#index', as: :devices, format: :json
+    end    
   end
 end
