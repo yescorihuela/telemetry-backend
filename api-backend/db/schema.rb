@@ -33,12 +33,15 @@ ActiveRecord::Schema.define(version: 2020_03_08_162402) do
   end
 
   create_table "event_routes", force: :cascade do |t|
-    t.bigint "vehicle_id"
+    t.bigint "device_id"
     t.bigint "event_id"
+    t.bigint "trip_id"
+    t.geography "location", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["device_id"], name: "index_event_routes_on_device_id"
     t.index ["event_id"], name: "index_event_routes_on_event_id"
-    t.index ["vehicle_id"], name: "index_event_routes_on_vehicle_id"
+    t.index ["trip_id"], name: "index_event_routes_on_trip_id"
   end
 
   create_table "events", force: :cascade do |t|

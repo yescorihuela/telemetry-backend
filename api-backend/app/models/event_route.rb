@@ -1,4 +1,5 @@
 class EventRoute < ApplicationRecord
-    belongs_to :vehicles
-    belongs_to :events
+    belongs_to :device
+    belongs_to :event
+    belongs_to :trip
 end
