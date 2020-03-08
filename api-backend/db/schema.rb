@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2020_03_05_110845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "devices", force: :cascade do |t|
     t.string "device_serial_number"
@@ -56,21 +57,21 @@ ActiveRecord::Schema.define(version: 2020_03_05_110845) do
 
   create_table "gps_measurements", force: :cascade do |t|
     t.bigint "device_id"
-    t.float "latitude"
-    t.float "longitude"
+    t.geography "road_lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.datetime "incoming_measurement_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["device_id"], name: "index_gps_measurements_on_device_id"
+    t.index ["road_lonlat"], name: "index_gps_measurements_on_road_lonlat", using: :gist
   end
 
   create_table "route_coordinates", force: :cascade do |t|
     t.bigint "route_id"
-    t.float "latitude"
-    t.float "longitude"
+    t.geography "route_lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["route_id"], name: "index_route_coordinates_on_route_id"
+    t.index ["route_lonlat"], name: "index_route_coordinates_on_route_lonlat", using: :gist
   end
 
   create_table "routes", force: :cascade do |t|
