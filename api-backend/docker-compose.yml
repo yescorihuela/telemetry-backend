@@ -34,7 +34,7 @@ services:
       - POSTGRES_PASSWORD=p30r3sn4d4
       - POSTGRES_DB=telemetry_buses_peor_es_nada
     ports:
-      - "5432:5432"
+      - "5433:5432"
 networks:
   peor_es_nada:
     driver: bridge

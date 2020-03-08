@@ -6,6 +6,12 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+ActiveRecord::Base.connection.execute("TRUNCATE vehicle_devices RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE drivers RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE devices RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE vehicles RESTART IDENTITY CASCADE")
+
+
 license_plates = 'ABCDEF'.chars.permutation.to_a.map(&:join).sort[0...3]
 
 drivers = Driver.create([
