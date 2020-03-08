@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_05_110845) do
+ActiveRecord::Schema.define(version: 2020_03_08_162402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,8 +62,10 @@ ActiveRecord::Schema.define(version: 2020_03_05_110845) do
     t.datetime "incoming_measurement_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "trip_id"
     t.index ["device_id"], name: "index_gps_measurements_on_device_id"
     t.index ["road_lonlat"], name: "index_gps_measurements_on_road_lonlat", using: :gist
+    t.index ["trip_id"], name: "index_gps_measurements_on_trip_id"
   end
 
   create_table "route_coordinates", force: :cascade do |t|
@@ -124,4 +126,5 @@ ActiveRecord::Schema.define(version: 2020_03_05_110845) do
     t.index ["driver_id"], name: "index_vehicles_on_driver_id"
   end
 
+  add_foreign_key "gps_measurements", "trips"
 end

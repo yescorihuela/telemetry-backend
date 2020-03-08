@@ -18,6 +18,6 @@ class DistanceEvaluatorService
     sql = "SELECT ST_Distance(
             ST_Transform('SRID=4326;POINT(#{terminal_lon} #{terminal_lat})'::geometry, 2163),
             ST_Transform('SRID=4326;POINT(#{position_lon} #{position_lat})'::geometry, 2163)
-        ) as distance"    
+        ) as distance"
   end
 end
