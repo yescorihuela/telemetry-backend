@@ -10,6 +10,7 @@ ActiveRecord::Base.connection.execute("TRUNCATE vehicle_devices RESTART IDENTITY
 ActiveRecord::Base.connection.execute("TRUNCATE drivers RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE devices RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE vehicles RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE routes RESTART IDENTITY CASCADE")
 
 
 license_plates = 'ABCDEF'.chars.permutation.to_a.map(&:join).sort[0...3]
@@ -72,4 +73,24 @@ vehicle_devices = VehicleDevice.create([
         vehicle_id: 3,
         device_id: 3
     }    
+])
+
+
+routes = Route.create([
+    {
+        name: 'Santiago -> Peor es nada',
+        direction: 'Ida'
+    },
+    {
+        name: ' Peor es nada -> Santiago',
+        direction: 'Vuelta'
+    },
+    {
+        name: 'Santiago - Peor es nada - Santiago',
+        direction: 'Ida y Vuelta'
+    },
+    {
+        name: 'Peor es Nada - Santiago - Peor es Nada',
+        direction: 'Ida y Vuelta'
+    },    
 ])
