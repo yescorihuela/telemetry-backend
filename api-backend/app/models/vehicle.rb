@@ -1,4 +1,5 @@
 class Vehicle < ApplicationRecord
-    has_many :devices, through: :vehicle_device
+    has_many :vehicle_devices
+    has_many :devices, through: :vehicle_devices
     belongs_to :driver
 end
