@@ -20,6 +20,17 @@ class DistanceEvaluatorService
     end
   end
 
+
+  def self.close_to_terminal?(point, threshold = 100)
+    begin
+      terminal = GeoFence.peor_es_nada_terminal
+      !Device.find_by_sql(render_query(point, terminal.location)).first > threshold
+    rescue
+      false
+    end
+  end
+
+
   private
 
   def render_query(point_from, point_to)
