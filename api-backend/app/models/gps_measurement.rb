@@ -1,6 +1,5 @@
 class GpsMeasurement < ApplicationRecord
     belongs_to :device
-    belongs_to :vehicle
 
     scope :within, -> (latitude, longitude, distance_in_meters = 100) {
         where(%{
