@@ -101,14 +101,12 @@ namespace :trips do
     {:road_lonlat=>"POINT (-71.04766900024413 -34.790025828558851)"},
     {:road_lonlat=>"POINT (-71.04652404785156 -34.791074253715365)"}
   ]
-   
+
+  upper_bound = 5
+  @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
+
   desc "Start to broadcast as GPS installed device in a vehicle each 10 seconds"
   task regular_trips: :environment do
-    # GpsMeasurement.create!(data_gps_measurements)
-    upper_bound = 5
-
-    @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
-
     @devices.each do |device|
       trip = Trip.create!(route_id: 1, trip_status_id: 1)
       data_gps_measurements.each do |measurement|
@@ -124,12 +122,27 @@ namespace :trips do
       end
       # Next bus to exit
       sleep(60)
-    end    
+    end
   end
 
-  desc "Start to broadcast as GPS installed device in a vehicle each 10 seconds"
+  desc "Start to broadcast as GPS installed device in vehicle with irregular broadcasting"
   task irregular_trips: :environment do
-
+    @devices.each do |device|
+      trip = Trip.create!(route_id: 1, trip_status_id: 1)
+      data_gps_measurements.each do |measurement|
+        GpsMeasurement.create!({
+          :device_id => device.id,
+          :road_lonlat => measurement[:road_lonlat],
+          :incoming_measurement_at => Time.now(),
+          :trip_id => trip.id
+        })
+        Rails.logger.info "Broadcasting device #{device.device_serial_number}..."
+        # Ten seconds for broadcast the next position
+        sleep((rand * 60).to_i)
+      end
+      # Next bus to exit
+      sleep(60)
+    end
   end
 
 end
