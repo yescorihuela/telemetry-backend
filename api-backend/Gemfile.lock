@@ -33,6 +33,9 @@ GEM
       activemodel (= 5.2.4.1)
       activesupport (= 5.2.4.1)
       arel (>= 9.0)
+    activerecord-postgis-adapter (5.2.2)
+      activerecord (~> 5.1)
+      rgeo-activerecord (~> 6.0)
     activestorage (5.2.4.1)
       actionpack (= 5.2.4.1)
       activerecord (= 5.2.4.1)
@@ -118,6 +121,10 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rexml (3.2.4)
+    rgeo (2.1.1)
+    rgeo-activerecord (6.2.1)
+      activerecord (>= 5.0)
+      rgeo (>= 1.0.0)
     rubocop (0.80.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -152,6 +159,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-postgis-adapter
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)
   byebug

@@ -15,8 +15,11 @@
 # gem 'pg'
 #
 default: &default
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
+  postgis_extension: postgis
+  postgis_schema: public
+  schema_search_path: public,postgis
   username: <%= ENV["POSTGRES_USER"] %>
   password: <%= ENV["POSTGRES_PASSWORD"] %>  
   host: db_measurements
@@ -26,10 +29,17 @@ default: &default
 
 development:
   <<: *default
+  adapter: postgis
+  encoding: unicode
+  postgis_extension: postgis
+  postgis_schema: public
+  schema_search_path: public,postgis  
   username: <%= ENV["POSTGRES_USER"] %>
   password: <%= ENV["POSTGRES_PASSWORD"] %>  
   database: <%= ENV.fetch("POSTGRES_DB") + '_development' %>
+  host: db_measurements
   port: 5432
+  
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
@@ -62,6 +72,11 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  adapter: postgis
+  encoding: unicode
+  postgis_extension: postgis
+  postgis_schema: public
+  schema_search_path: public,postgis   
   username: <%= ENV["POSTGRES_USER"] %>
   password: <%= ENV["POSTGRES_PASSWORD"] %>  
   database: <%= ENV["POSTGRES_DB"] + '_test' %>

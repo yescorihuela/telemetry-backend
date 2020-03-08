@@ -25,7 +25,7 @@ services:
     container_name: db_measurements
     volumes :
       - pgdata:/var/lib/postgresql/data    
-    image: postgres:11
+    image: mdillon/postgis:11
     restart: always
     networks:
       - peor_es_nada
