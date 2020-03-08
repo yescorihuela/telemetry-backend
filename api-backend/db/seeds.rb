@@ -13,6 +13,9 @@ ActiveRecord::Base.connection.execute("TRUNCATE devices RESTART IDENTITY CASCADE
 ActiveRecord::Base.connection.execute("TRUNCATE vehicles RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE routes RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE route_coordinates RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE trips RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE trip_statuses RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE geo_fences RESTART IDENTITY CASCADE")
 
 license_plates = 'ABCDEF'.chars.permutation.to_a.map(&:join).sort[0...6]
 
@@ -73,6 +76,10 @@ devices = Device.create([
     }
 ])
 
+GeoFence.create!([
+    {:description => 'Terminal Estación Central', :location => 'POINT (-70.69075584411621 -33.45382270754665)'},
+    {:description => 'Terminal Peor es Nada', :location => 'POINT (-71.04652404785156 -34.791074253715365)'}
+])
 
 vehicles = Vehicle.create([
     {
@@ -140,6 +147,18 @@ routes = Route.create([
         name: 'Santiago - Peor es nada - Santiago',
         direction: 'Ida y Vuelta'
     }
+])
+
+TripStatus.create!([
+    {
+        :description => 'En ruta'
+    },
+    {
+        :description => 'Incompleto'
+    },
+    {
+        :description => 'Finalizado'
+    }    
 ])
 
 

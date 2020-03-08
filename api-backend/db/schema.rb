@@ -48,11 +48,12 @@ ActiveRecord::Schema.define(version: 2020_03_05_110845) do
   end
 
   create_table "geo_fences", force: :cascade do |t|
+    t.geography "location", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "description"
-    t.float "latitude"
-    t.float "longitude"
+    t.integer "threshold", default: 100
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["location"], name: "index_geo_fences_on_location", using: :gist
   end
 
   create_table "gps_measurements", force: :cascade do |t|
