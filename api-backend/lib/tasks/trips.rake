@@ -107,7 +107,7 @@ namespace :trips do
     # GpsMeasurement.create!(data_gps_measurements)
     upper_bound = 5
 
-    @devices = Device.select(:id).limit(upper_bound)
+    @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
 
     @devices.each do |device|
       trip = Trip.create!(route_id: 1, trip_status_id: 1)
@@ -118,6 +118,7 @@ namespace :trips do
           :incoming_measurement_at => Time.now(),
           :trip_id => trip.id
         })
+        Rails.logger.info "Broadcasting device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
         sleep(10)
       end
