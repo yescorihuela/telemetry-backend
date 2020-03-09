@@ -73,11 +73,11 @@ ActiveRecord::Schema.define(version: 2020_03_08_162402) do
 
   create_table "route_coordinates", force: :cascade do |t|
     t.bigint "route_id"
-    t.geography "route_lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.geography "route_polygon", limit: {:srid=>4326, :type=>"st_polygon", :geographic=>true}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["route_id"], name: "index_route_coordinates_on_route_id"
-    t.index ["route_lonlat"], name: "index_route_coordinates_on_route_lonlat", using: :gist
+    t.index ["route_polygon"], name: "index_route_coordinates_on_route_polygon", using: :gist
   end
 
   create_table "routes", force: :cascade do |t|
