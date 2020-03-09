@@ -10,7 +10,6 @@ class RouteEvaluatorService
     end
   end
 
-
   def self.vehicle_is_stopped?(device_id, trip_id, threshold = 120)
     begin
       (Time.now - Device.find(device_id).gps_measurements.where(:trip_id => trip_id).last.incoming_measurement_at).seconds.to_i >= threshold
@@ -22,5 +21,7 @@ class RouteEvaluatorService
   def self.point_exists_in_route?(route_id, point)
     Route.find(route_id).route_coordinates.exists?(route_lonlat: point)
   end
+
+
 
 end

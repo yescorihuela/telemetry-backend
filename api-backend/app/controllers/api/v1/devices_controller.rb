@@ -6,10 +6,6 @@ module Api
 
         end
 
-        def show
-          render json: DeviceSerializer.new(@device)
-        end
-
         private 
 
         def set_device
