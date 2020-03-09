@@ -9,9 +9,3 @@ class RouteCoordinateService
       ) and rc.route_id = %d) as is_within_route} % [longitude, latitude, route_id]).first[:is_within_route]
   end
 end
-
-# -70.69127082824706 -33.45403754073398
-
-# RouteCoordinateService.is_within_route?(1, -33.45403754073398, -70.69127082824706)
-
-# RouteCoordinateService.is_within_route(1, -33.45403754073398, 70.69127082824706)
