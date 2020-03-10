@@ -6,6 +6,6 @@ class TripService
     .joins('INNER JOIN devices ON (trips.device_id = devices.id)')
     .joins('INNER JOIN vehicle_devices ON (devices.id = vehicle_devices.device_id)')
     .joins('INNER JOIN vehicles ON (vehicle_devices.vehicle_id = vehicles.id)')
-    .where('trips.created_at::date = ?', datetime)
+    .where('trips.created_at::date = ?', datetime).order(:id)
   end
 end
