@@ -393,7 +393,7 @@ namespace :trips do
         })
         Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
-        sleep((0.500))
+        sleep((0.125))
       end
       last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
       unless DistanceEvaluatorService.close_to_terminal?(last_location)

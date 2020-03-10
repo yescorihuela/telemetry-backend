@@ -22,21 +22,10 @@ class DistanceEvaluatorService
 
 
   def self.close_to_terminal?(point, threshold = 100)
-    begin
-      terminal = GeoFence.peor_es_nada_terminal
-      !Device.find_by_sql(render_query(point, terminal.location)).first > threshold
-    rescue
-      false
-    end
-  end
-
-
-  private
-
-  def render_query(point_from, point_to)
-    sql = "SELECT ST_Distance(
-            ST_Transform('SRID=4326;#{point_from}'::geometry, 2163),
-            ST_Transform('SRID=4326;#{point_to})'::geometry, 2163)
-        ) as distance"
+      terminal = GeoFence.peor_es_nada_terminal()
+      Device.find_by_sql("SELECT ST_Distance(
+                              'SRID=4326;#{point}'::geometry,
+                              'SRID=4326;#{terminal.location}'::geometry
+                          ) as distance").first.distance <= threshold
   end
 end
