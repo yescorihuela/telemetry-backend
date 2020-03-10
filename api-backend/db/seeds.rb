@@ -140,8 +140,8 @@ VehicleDevice.create!([
 
 route = Route.create!([
   {
-    name: 'Santiago -> Peor es nada',
-    direction: 'Ida'
+    name: 'Santiago <-> Peor es nada',
+    direction: 'Ida y Vuelta'
   }
 ])
 

@@ -355,14 +355,16 @@ namespace :trips do
     end
   end
 
-  desc "Start to broadcast as GPS installed device get out from the route or stopped"
-  task irregular_routes: :environment do
+  desc "Start to broadcast as GPS installed device get out from the route"
+  task irregular_route: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
+    @route = Route.find(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1)
+      trip = Trip.create!(route_id: @route.id, trip_status_id: 1)
       data_gps_measurements_get_out_from_route.each do |measurement|
-        if RouteEvaluatorService.device_out_from_route?(device, trip, measurement[:road_lonlat])
-          Rails.logger.info "Vehicle out of route #{device.device_serial_number}..."
+    
+        unless RouteCoordinateService.is_within_route?(@route.id, measurement[:road_lonlat])
+          Rails.logger.info "Vehicle out of route #{device.vehicles.first.license_plate}..."
           EventRoute.create!({
             :device_id => device.id,
             :event_id => 1,
@@ -370,6 +372,40 @@ namespace :trips do
             :location => measurement[:road_lonlat]
           })
         end
+
+        if RouteCoordinateService.back_to_route?(trip.id, device.id, @route.id, measurement[:road_lonlat])
+          Rails.logger.info "Vehicle #{device.vehicles.first.license_plate} return to route..."
+          EventRoute.create!({
+            :device_id => device.id,
+            :event_id => 2,
+            :trip_id => trip.id,
+            :location => measurement[:road_lonlat]
+          })
+        end          
+
+        GpsMeasurement.create!({
+          :device_id => device.id,
+          :road_lonlat => measurement[:road_lonlat],
+          :incoming_measurement_at => Time.now().to_s,
+          :trip_id => trip.id
+        })
+        Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
+        # Ten seconds for broadcast the next position
+        sleep((0.500))
+      end
+      # Next bus to exit
+      sleep(60)
+    end
+  end
+
+  desc "Stopped vehicle"
+  task stopped_vehicle: :environment do
+    @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
+    @route = Route.find(1)
+    @devices.each do |device|
+      trip = Trip.create!(route_id: @route, trip_status_id: 1)
+      data_gps_measurements_get_out_from_route.each do |measurement|
+
         if RouteEvaluatorService.vehicle_is_stopped?(device.id, trip.id)
           Rails.logger.info "Vehicle has stopped #{device.device_serial_number}..."
           EventRoute.create!({
@@ -378,7 +414,8 @@ namespace :trips do
             :trip_id => trip.id,
             :location => measurement[:road_lonlat]
           })
-        end        
+        end
+
         GpsMeasurement.create!({
           :device_id => device.id,
           :road_lonlat => measurement[:road_lonlat],
@@ -393,6 +430,8 @@ namespace :trips do
       sleep(60)
     end
   end
+
+
 
   desc "Start to broadcast as GPS installed device for unfinished trip"
   task unfinished_trip: :environment do
