@@ -4,6 +4,7 @@ class CreateEventRoutes < ActiveRecord::Migration[5.2]
       t.references :device
       t.references :event
       t.references :trip
+      t.datetime :occurred_at
       t.st_point :location, geographic: true
       t.timestamps
     end

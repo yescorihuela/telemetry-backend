@@ -369,6 +369,7 @@ namespace :trips do
             :device_id => device.id,
             :event_id => 1,
             :trip_id => trip.id,
+            :occurred_at => Time.now().to_s,
             :location => measurement[:road_lonlat]
           })
         end
@@ -379,6 +380,7 @@ namespace :trips do
             :device_id => device.id,
             :event_id => 2,
             :trip_id => trip.id,
+            :occurred_at => Time.now().to_s,
             :location => measurement[:road_lonlat]
           })
         end          
@@ -412,6 +414,7 @@ namespace :trips do
             :device_id => device.id,
             :event_id => 3,
             :trip_id => trip.id,
+            :occurred_at => Time.now().to_s,
             :location => measurement[:road_lonlat]
           })
         end
