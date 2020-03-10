@@ -1,6 +1,8 @@
 class Api::V1::VehiclesController < ApplicationController
   before_action :set_params, only: [:show]
   def index
+    @vehicles = Vehicle.all()
+    render json: Api::V1::VehicleSerializer.new(@vehicles), status: :ok
   end
 
   def show
