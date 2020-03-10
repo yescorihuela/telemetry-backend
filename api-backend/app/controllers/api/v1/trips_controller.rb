@@ -7,4 +7,10 @@ class Api::V1::TripsController < ApplicationController
     @events = EventService.get_events_by_date_device(params[:trip_id], params[:datetime], params[:license_plate])
     render json: Api::V1::EventSerializer.new(@events), status: :ok
   end
+
+  def check_coordinates
+    @coordinates = GpsMeasurementService.check_location(params[:device_id], params[:latitude], params[:longitude], params[:datetime])
+    render json: Api::V1::GpsMeasurementSerializer.new(@coordinates), status: :ok
+  end
+
 end
