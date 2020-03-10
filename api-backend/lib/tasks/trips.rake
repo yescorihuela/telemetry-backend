@@ -315,7 +315,7 @@ namespace :trips do
   task regular_trips: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s)
       data_gps_measurements.each do |measurement|
         GpsMeasurement.create!({
           :device_id => device.id,
@@ -338,7 +338,7 @@ namespace :trips do
   task irregular_trips: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s)
       data_gps_measurements.each do |measurement|
         GpsMeasurement.create!({
           :device_id => device.id,
@@ -360,7 +360,7 @@ namespace :trips do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @route = Route.find(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: @route.id, trip_status_id: 1)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s)
       data_gps_measurements_get_out_from_route.each do |measurement|
     
         unless RouteCoordinateService.is_within_route?(@route.id, measurement[:road_lonlat])
@@ -395,6 +395,14 @@ namespace :trips do
         # Ten seconds for broadcast the next position
         sleep((0.500))
       end
+      last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
+      unless DistanceEvaluatorService.close_to_terminal?(last_location)
+        trip.update!({trip_status_id: 2, finished_at: Time.now().to_s})
+        Rails.logger.info "Unfinished trip vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
+      else
+        Rails.logger.info "Finished trip vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
+        trip.update!({trip_status_id: 3, finished_at: Time.now().to_s})
+      end
       # Next bus to exit
       sleep(60)
     end
@@ -405,7 +413,7 @@ namespace :trips do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @route = Route.find(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: @route, trip_status_id: 1)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id)
       data_gps_measurements_get_out_from_route.each do |measurement|
 
         if RouteEvaluatorService.vehicle_is_stopped?(device.id, trip.id)
@@ -429,6 +437,14 @@ namespace :trips do
         # Ten seconds for broadcast the next position
         sleep((rand * 150).to_i)
       end
+      last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
+      unless DistanceEvaluatorService.close_to_terminal?(last_location)
+        trip.update!({trip_status_id: 2, finished_at: Time.now().to_s})
+        Rails.logger.info "Unfinished trip vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
+      else
+        Rails.logger.info "Finished trip vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
+        trip.update!({trip_status_id: 3, finished_at: Time.now().to_s})
+      end
       # Next bus to exit
       sleep(60)
     end
@@ -440,7 +456,7 @@ namespace :trips do
   task unfinished_trip: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id)
       data_gps_measurements_unfinished_trip.each do |measurement|
         GpsMeasurement.create!({
           :device_id => device.id,
@@ -454,9 +470,9 @@ namespace :trips do
       end
       last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
       unless DistanceEvaluatorService.close_to_terminal?(last_location)
-        trip.update!({trip_status_id: 2})
+        trip.update!({trip_status_id: 2, finished_at: Time.now().to_s})
         Rails.logger.info "Unfinished trip vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
-      end      
+      end
     end
   end
 end
