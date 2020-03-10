@@ -351,7 +351,7 @@ namespace :trips do
         sleep((rand * 60).to_i)
       end
       # Next bus to exit
-      sleep(60)
+      sleep(5)
     end
   end
 
@@ -393,7 +393,7 @@ namespace :trips do
         })
         Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
-        sleep((0.125))
+        sleep((0.050))
       end
       last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
       unless DistanceEvaluatorService.close_to_terminal?(last_location)
@@ -404,7 +404,7 @@ namespace :trips do
         trip.update!({trip_status_id: 3, finished_at: Time.now().to_s})
       end
       # Next bus to exit
-      sleep(60)
+      sleep(5)
     end
   end
 
@@ -446,7 +446,7 @@ namespace :trips do
         trip.update!({trip_status_id: 3, finished_at: Time.now().to_s})
       end
       # Next bus to exit
-      sleep(60)
+      sleep(5)
     end
   end
 
@@ -466,7 +466,7 @@ namespace :trips do
         })
         Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
-        sleep(0.25)
+        sleep(0.050)
       end
       last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
       unless DistanceEvaluatorService.close_to_terminal?(last_location)
