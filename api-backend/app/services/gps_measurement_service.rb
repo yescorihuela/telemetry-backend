@@ -15,6 +15,3 @@ class GpsMeasurementService
         and incoming_measurement_at::date = '%s'} % [point, point, threshold, trip_id, datetime]).first
   end
 end
-
-# GpsMeasurementService.check_location(13, -33.45403754073398, -70.69127082824706, '2020-03-11')
-# trips/13/coordinates/2020-03-11/?latitude=-33.45403754073398&longitude=-70.69127082824706
