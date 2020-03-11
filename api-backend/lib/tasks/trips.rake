@@ -338,7 +338,7 @@ namespace :trips do
   task irregular_trips: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 1)
       data_gps_measurements.each do |measurement|
         GpsMeasurement.create!({
           :device_id => device.id,
@@ -360,7 +360,7 @@ namespace :trips do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @route = Route.find(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 1)
       data_gps_measurements_get_out_from_route.each do |measurement|
     
         unless RouteCoordinateService.is_within_route?(@route.id, measurement[:road_lonlat])
@@ -413,7 +413,7 @@ namespace :trips do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @route = Route.find(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 1)
       data_gps_measurements_get_out_from_route.each do |measurement|
 
         if RouteEvaluatorService.vehicle_is_stopped?(device.id, trip.id)
@@ -456,7 +456,7 @@ namespace :trips do
   task unfinished_trip: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 1)
       data_gps_measurements_unfinished_trip.each do |measurement|
         GpsMeasurement.create!({
           :device_id => device.id,

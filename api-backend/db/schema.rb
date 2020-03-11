@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_08_162402) do
+ActiveRecord::Schema.define(version: 2020_03_10_231913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,14 @@ ActiveRecord::Schema.define(version: 2020_03_08_162402) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "trip_directions", force: :cascade do |t|
+    t.string "departure"
+    t.string "arrival"
+    t.string "direction"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "trip_statuses", force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", null: false
@@ -102,8 +110,10 @@ ActiveRecord::Schema.define(version: 2020_03_08_162402) do
     t.datetime "finished_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "trip_direction_id"
     t.index ["device_id"], name: "index_trips_on_device_id"
     t.index ["route_id"], name: "index_trips_on_route_id"
+    t.index ["trip_direction_id"], name: "index_trips_on_trip_direction_id"
     t.index ["trip_status_id"], name: "index_trips_on_trip_status_id"
   end
 
@@ -135,4 +145,5 @@ ActiveRecord::Schema.define(version: 2020_03_08_162402) do
   end
 
   add_foreign_key "gps_measurements", "trips"
+  add_foreign_key "trips", "trip_directions"
 end

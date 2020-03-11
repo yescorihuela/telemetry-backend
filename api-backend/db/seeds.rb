@@ -15,6 +15,7 @@ ActiveRecord::Base.connection.execute("TRUNCATE routes RESTART IDENTITY CASCADE"
 ActiveRecord::Base.connection.execute("TRUNCATE route_coordinates RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE trips RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE trip_statuses RESTART IDENTITY CASCADE")
+ActiveRecord::Base.connection.execute("TRUNCATE trip_directions RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE geo_fences RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE gps_measurements RESTART IDENTITY CASCADE")
 ActiveRecord::Base.connection.execute("TRUNCATE events RESTART IDENTITY CASCADE")
@@ -143,6 +144,19 @@ route = Route.create!([
     name: 'Santiago <-> Peor es nada',
     direction: 'Ida y Vuelta'
   }
+])
+
+TripDirection.create!([
+  {
+    departure: 'Terminal Estacion Central - Santiago',
+    arrival: 'Terminal Peor Es Nada - Peor Es Nada',
+    direction: 'GOING'
+  },
+  {
+    arrival: 'Terminal Estacion Central - Santiago',
+    departure: 'Terminal Estacion Central - Santiago',
+    direction: 'RETURN'
+  }  
 ])
 
 TripStatus.create!([

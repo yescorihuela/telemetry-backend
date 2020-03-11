@@ -1,7 +1,7 @@
 class GpsMeasurementService
   def self.check_location(device_id, latitude, longitude, datetime, threshold = 100)
       point = "POINT(#{longitude} #{latitude})"
-
+      begin
       GpsMeasurement.find_by_sql(%{SELECT ST_Distance(
         ST_Transform(('SRID=4326;' || road_lonlat)::geometry, 2163), 
         ST_Transform('SRID=4326; %s'::geometry, 2163)
@@ -11,7 +11,10 @@ class GpsMeasurementService
           ST_Transform(('SRID=4326;' || road_lonlat)::geometry, 2163), 
         ST_Transform('SRID=4326; %s'::geometry, 2163)) <= %d
         and device_id = %s
-        and incoming_measurement_at::date = '%s';} % [point, point, threshold, device_id, datetime]).first.distance
+        and incoming_measurement_at::date = '%s'} % [point, point, threshold, device_id, datetime]).first.distance
+      rescue
+        -1
+      end
   end
 end
 
