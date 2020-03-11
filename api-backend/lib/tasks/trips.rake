@@ -315,7 +315,7 @@ namespace :trips do
   task regular_trips: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 1)
       data_gps_measurements.each do |measurement|
         GpsMeasurement.create!({
           :device_id => device.id,
@@ -325,13 +325,15 @@ namespace :trips do
         })
         Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
-        sleep(10)
+        sleep(0.050)
       end
       # Finish the trip
       trip.update!(trip_status_id: 3)
       # Next bus to exit
+      Rails.logger.info "Waiting the next bus departure..."
       sleep(5)
     end
+    Rails.logger.info "Task executed sucessfully..."
   end
 
   desc "Start to broadcast as GPS installed device in vehicle with irregular broadcasting"
@@ -351,8 +353,10 @@ namespace :trips do
         sleep((rand * 60).to_i)
       end
       # Next bus to exit
+      Rails.logger.info "Waiting the next bus departure..."
       sleep(5)
     end
+    Rails.logger.info "Task executed sucessfully..."
   end
 
   desc "Start to broadcast as GPS installed device get out from the route"
@@ -404,8 +408,10 @@ namespace :trips do
         trip.update!({trip_status_id: 3, finished_at: Time.now().to_s})
       end
       # Next bus to exit
+      Rails.logger.info "Waiting the next bus departure..."
       sleep(5)
     end
+    Rails.logger.info "Task executed sucessfully..."
   end
 
   desc "Stopped vehicle"
@@ -446,8 +452,10 @@ namespace :trips do
         trip.update!({trip_status_id: 3, finished_at: Time.now().to_s})
       end
       # Next bus to exit
+      Rails.logger.info "Waiting the next bus departure..."
       sleep(5)
     end
+    Rails.logger.info "Task executed sucessfully..."
   end
 
 

@@ -9,7 +9,7 @@ class Api::V1::TripsController < ApplicationController
   end
 
   def check_coordinates
-    @coordinates = GpsMeasurementService.check_location(params[:device_id], params[:latitude], params[:longitude], params[:datetime])
+    @coordinates = GpsMeasurementService.check_location(params[:trip_id], params[:latitude], params[:longitude], params[:datetime])
     render json: Api::V1::GpsMeasurementSerializer.new(@coordinates), status: :ok
   end
 

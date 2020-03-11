@@ -14,8 +14,7 @@ class DistanceEvaluatorService
       terminal = GeoFence.peor_es_nada_terminal()
       Device.find_by_sql(%{SELECT ST_Distance(
           ST_Transform('SRID=4326;%s'::geometry, 2163),
-          ST_Transform('SRID=4326;%s'::geometry, 2163)
-      ) as distance} % [point, terminal.location]).first[:distance] <= threshold
+          ST_Transform('SRID=4326;%s'::geometry, 2163)) as distance} % [point, terminal.location]).first[:distance] <= threshold
   end
 
   def self.departed_from(trip_id, device_id)
