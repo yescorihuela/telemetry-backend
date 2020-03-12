@@ -1,4 +1,4 @@
-## ¿Como fue diseñado el backend para Peor es Nada?
+## ¿Como fue diseñado el backend para Peor es Nada?
 
 A grandes rasgos, se pensó originalmente como dos aplicaciones backend separadas (con una orientación a microservicios) ¿Cómo es eso? Bien, tener cuatro servicios trabajando, el microservicio receptor de las peticiones de los dispositivos GPS, las cuales serían enviadas a una cola (en RabbitMQ por ejemplo) y luego esta sería consumida por otro microservicio o como en lo particular pudiera ser: un worker, procesando los datos y almacenándolos en una base de datos (el cual es otro servicio en otro contenedor también), luego serían disponibilizados por una API REST (otro microservicio, aunque no sería tan micro).
  
@@ -52,7 +52,7 @@ rake trips:unfinished_trip          # Start to broadcast as GPS installed device
 ```
 
 
-## Endpoints
+## Endpoints
 
 Todos los endpoint poseen el prefijo http://ec2-3-86-166-95.compute-1.amazonaws.com:4001, que indican la ubicación remota donde se encuentra.
 
