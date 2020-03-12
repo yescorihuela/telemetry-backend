@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do
-      get 'gps_measurements/check_location/', to: 'gps_measurements#check_location', as: :devices
       get 'trips/:datetime', to: 'trips#check_trips', as: :check_trips
       get 'trips/:trip_id/events/:datetime(/:license_plate)', to: 'trips#check_events', as: :check_events
       get 'trips/:trip_id/coordinates/:datetime/', to: 'trips#check_coordinates', as: :check_coordinates
