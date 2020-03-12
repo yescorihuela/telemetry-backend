@@ -153,8 +153,8 @@ TripDirection.create!([
     direction: 'GOING_TO'
   },
   {
+    departure: 'Terminal Peor Es Nada - Peor Es Nada',
     arrival: 'Terminal Estacion Central - Santiago',
-    departure: 'Terminal Estacion Central - Santiago',
     direction: 'RETURN_FROM'
   }  
 ])
