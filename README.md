@@ -11,7 +11,7 @@ Se utiliza para este backend las siguientes tecnologías:
 * 	Rails 5.2.4.1
 * 	Postgresql 11
 * 	Postgis 2.5
-*  Docker y Docker Compose
+*   Docker y Docker Compose
 
 La plataforma de despliegue que se utilizó fue AWS: una instancia EC2 t2.micro disponible en la `free tier`
 
@@ -55,7 +55,7 @@ rake trips:unfinished_trip          # Start to broadcast as GPS installed device
 ## Endpoints
 
 
-Todos los endpoint poseen el prefijo http://ec2-3-86-166-95.compute-1.amazonaws.com:4001, que indican la ubicación remota donde se encuentra.
+**Nota:** Todos los endpoint poseen el prefijo http://ec2-3-86-166-95.compute-1.amazonaws.com:4001, que indican la ubicación remota donde se encuentra.
 
 ```bash
 /api/v1/trips/:datetime/
@@ -85,7 +85,7 @@ http://ec2-3-86-166-95.compute-1.amazonaws.com:4001/api/v1/trips/2020-03-12/dire
 
 ----
 ```bash
-/api/v1/trips/:trip_id/events/:datetime/
+/api/v1/trips/:trip_id/events/:datetime(/:license_plate)
 ```
 Este endpoint retorna todos los eventos de un viaje determinado (trip_id) y los lista en orden ascendente
 
@@ -95,10 +95,30 @@ Un ejemplo de como puede ser utilizado:
 http://ec2-3-86-166-95.compute-1.amazonaws.com:4001/api/v1/api/v1/trips/3/events/2020-03-12/
 ```
 
+----
 
-## Disclamer
-Aun no se ha terminado de documentar todos los endpoints y las decisiones sobre las gemas utilizadas.
+```bash
+/api/v1/trips/:trip_id/coordinates/:datetime/
+```
+Retorna la verificación de coordenadas y la proximidad del vehículo respecto a la coordenada indicada.
 
+Un ejemplo de como puede ser utilizado:
 
-	
+```bash
+http://ec2-3-86-166-95.compute-1.amazonaws.com:4001/api/v1/api/v1/trips/3/events/2020-03-12/
+```
+---
+
+## Decisiones de diseño:
+
+* Es necesario hacer un pequeño disclamer por acá: es la primera vez que utilizo la gema para trabajar con PostGIS. Ahora bien se decide simplificar el diseño del backend por una razón muy sencilla: el tiempo.
+
+* Una de las cosas que quise introducir, fue la gema `fast_json` que es proporcionada por Netflix y que por los benchmarks realizados, tiene un performance muy superior respecto a Active Model Serializers (AMS), la evidencia empírica lo demuestra, es bastante rápido el renderizado de JSON en los endpoints.
+
+* Se procede a utilizar servicios, para no cargar a los modelos de tanta lógica, por aquello de _Fat Models, Skinny Controlllers_, sin embargo las investigaciones que he realizado, indican que Rails cuenta con los _concerns_ que son una forma más efectiva y mejor desde el punto de vista del diseño de las aplicaciones. Traté de que los modelos no fueran tan _Fat_ y que los controladores solamente tengan lo mínimo para operar de acuerdo a su contexto.
+
+* Las razones de porque he utilizado Docker, es no depender de mi equipo, la perdida de una librería o incompatibilidad con el sistema operativo, Xcode, etc, es preferible manejar esa incertidumbre con Docker y reducirla hasta su mínima expresión.
+
+* Algunas consultas se dieron cercano al modo RAW, dado a la especificidad de los requerimientos, la proyección de la aplicación está hacia PostgreSQL, es la mejor herramienta en el ecosistema Open Source en el manejo de GIS.
+* Las tareas (rakes) son grandes pero son simplificables, para mostrar mejor los requerimientos que se han solicitado, sin embargo por la primera razón expuesta en estos puntos sobre diseño, no ha sido posible simplificarlas.
 

@@ -19,12 +19,12 @@ services:
       - POSTGRES_PASSWORD=p30r3sn4d4
       - POSTGRES_DB=telemetry_buses_peor_es_nada
     depends_on:
-      - db_measurements    
+      - db_measurements
 
   db_measurements:
     container_name: db_measurements
     volumes :
-      - pgdata:/var/lib/postgresql/data    
+      - pgdata:/var/lib/postgresql/data
     image: mdillon/postgis:11
     restart: always
     networks:
