@@ -10,7 +10,7 @@ class GpsMeasurementService
         LEAD(incoming_measurement_at) OVER (
         	PARTITION BY trip_id 
         	ORDER BY incoming_measurement_at ASC 
-        ) as next_measurement   
+        ) as next_measurement
         FROM gps_measurements WHERE 
         ST_Distance(
           ST_Transform(('SRID=4326;' || road_lonlat)::geometry, 2163), 
