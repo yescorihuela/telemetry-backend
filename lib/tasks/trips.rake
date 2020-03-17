@@ -344,6 +344,8 @@ namespace :trips do
     Rails.logger.info "Task executed sucessfully..."
   end
 
+
+  
   desc "Start to broadcast as GPS installed device in vehicle with irregular broadcasting"
   task irregular_trips: :environment do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
@@ -372,7 +374,7 @@ namespace :trips do
     @devices = Device.select(:id, :device_serial_number).limit(upper_bound)
     @route = Route.find(1)
     @devices.each do |device|
-      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 1)
+      trip = Trip.create!(route_id: 1, trip_status_id: 1, device_id: device.id, started_at: Time.now().to_s, trip_direction_id: 2)
       data_gps_measurements_get_out_from_route.each do |measurement|
     
         unless RouteCoordinateService.is_within_route?(@route.id, measurement[:road_lonlat])
@@ -405,7 +407,7 @@ namespace :trips do
         })
         Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
-        sleep((0.050))
+        sleep(10)
       end
       last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
       unless DistanceEvaluatorService.close_to_terminal?(last_location)
@@ -482,7 +484,7 @@ namespace :trips do
         })
         Rails.logger.info "Broadcasting vehicle #{device.vehicles.first.license_plate} with device #{device.device_serial_number}..."
         # Ten seconds for broadcast the next position
-        sleep(0.050)
+        sleep(10)
       end
       last_location = device.gps_measurements.where(:trip_id => trip.id).last.road_lonlat
       unless DistanceEvaluatorService.close_to_terminal?(last_location)
